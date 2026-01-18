@@ -7,13 +7,14 @@ import { formatDate } from "@/lib/utils";
 export default async function EventDetailPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
   const session = await auth();
+  const { id } = await params;
 
   const event = await prisma.event.findUnique({
     where: {
-      id: params.id,
+      id: id,
     },
     include: {
       _count: {

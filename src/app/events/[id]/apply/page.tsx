@@ -6,7 +6,7 @@ import ApplicationForm from "@/components/applications/ApplicationForm";
 export default async function ApplyPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
   const session = await auth();
 
@@ -14,9 +14,11 @@ export default async function ApplyPage({
     redirect("/login");
   }
 
+  const { id } = await params;
+
   const event = await prisma.event.findUnique({
     where: {
-      id: params.id,
+      id: id,
     },
   });
 

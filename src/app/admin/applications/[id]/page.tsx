@@ -8,7 +8,7 @@ import StatusUpdateForm from "@/components/applications/StatusUpdateForm";
 export default async function AdminApplicationDetailPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
   const session = await auth();
 
@@ -25,9 +25,11 @@ export default async function AdminApplicationDetailPage({
     redirect("/dashboard");
   }
 
+  const { id } = await params;
+
   const application = await prisma.application.findUnique({
     where: {
-      id: params.id,
+      id: id,
     },
     include: {
       user: {
